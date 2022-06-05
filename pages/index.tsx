@@ -1,16 +1,13 @@
 import type { NextPage } from "next";
 import styled from "styled-components";
+import { Button } from "../components/ui";
 
 const Home: NextPage = () => {
   return (
     <div>
-      <Title>hola</Title>
+      <Button>Boton</Button>
     </div>
   );
 };
 
 export default Home;
-
-const Title = styled.h1`
-  color: red;
-`;
