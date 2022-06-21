@@ -1,13 +1,8 @@
 import type { NextPage } from "next";
-import styled from "styled-components";
-import { Button } from "../components/ui";
+import { MainLayout } from "../components/layouts";
 
 const Home: NextPage = () => {
-  return (
-    <div>
-      <Button>Boton</Button>
-    </div>
-  );
+  return <MainLayout></MainLayout>;
 };
 
 export default Home;

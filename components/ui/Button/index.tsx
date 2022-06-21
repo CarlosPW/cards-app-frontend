@@ -7,22 +7,25 @@ import { ButtonStyled } from "../../../styles/ui";
 interface Props {
   children: React.ReactNode;
   color?: string;
+  darkColor?: string;
   textColor?: string;
   px?: string;
 }
 
 export const Button: FC<Props> = ({
   color = T.purple,
+  darkColor = T.darkPurple,
   textColor = "white",
   children = "Button",
-  px = "60px",
+  px = "15px 60px",
 }) => {
   return (
     <ButtonStyled
+      darkColor={darkColor}
       whileHover={{
-        scale: 1.05,
+        scale: 1.03,
       }}
-      whileTap={{ scale: 0.95 }}
+      whileTap={{ scale: 1 }}
     >
       <UpLayer color={color} textColor={textColor} px={px}>
         {children}
@@ -38,13 +41,16 @@ const UpLayer = styled.div<Props>`
   font-size: 16px;
   font-weight: 600;
   height: 100%;
-  /* min-width: 100px; */
-  padding: ${({ px }) => `15px ${px}`};
+  padding: ${({ px }) => px};
   text-align: center;
-  transition: 0.3s;
+
+  & > svg {
+    width: 35px;
+    height: 35px;
+  }
 
   &:active {
-    opacity: 0.8;
+    opacity: 0.7;
     transition: 0.3s;
   }
 `;
