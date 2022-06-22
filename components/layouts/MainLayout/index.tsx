@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Head from "next/head";
-import { Sidebar } from "../../ui";
+import { Navbar, Sidebar } from "../../ui";
 
 interface Props {
   children?: React.ReactNode;
@@ -21,6 +21,7 @@ export const MainLayout: FC<Props> = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Sidebar />
+      <Navbar />
       {children}
     </>
   );

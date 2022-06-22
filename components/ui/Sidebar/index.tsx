@@ -1,132 +1,86 @@
-import { FC } from "react";
-import styled from "styled-components";
+import { FC, useContext } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+
+import { UiContext } from "../../../contexts/ui";
 import { Button } from "../Button";
 
 import { AiFillHome, AiFillHeart } from "react-icons/ai";
 import { BiBarChart } from "react-icons/bi";
 import { MdLogout, MdOutlineClose } from "react-icons/md";
+import Backdrop from "./Backdrop";
+
+import { SidebarStyled } from "../../../styles/ui/";
 
 interface Props {}
 
-export const Sidebar: FC<Props> = () => {
-  return (
-    <SidebarStyled>
-      <div className="sidebar">
-        <div className="sidebar--header">
-          <span className="close">
-            <MdOutlineClose />
-          </span>
-
-          <hr />
-
-          <div className="avatar"></div>
-
-          <hr />
-        </div>
-
-        <ul className="sidebar--menu">
-          <li>
-            <Button px="5px 10px">
-              <AiFillHome />
-            </Button>
-          </li>
-          <li>
-            <Button px="5px 10px">
-              <AiFillHeart />
-            </Button>
-          </li>
-          <li>
-            <Button px="5px 10px">
-              <BiBarChart />
-            </Button>
-          </li>
-        </ul>
-
-        <div className="sidebar--logout">
-          <MdLogout />
-        </div>
-      </div>
-    </SidebarStyled>
-  );
+const dropIn = {
+  hidden: {
+    opacity: 0,
+    x: -120,
+  },
+  visible: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+    },
+  },
 };
 
-const SidebarStyled = styled.div`
-  height: 100vh;
-  overflow-y: auto;
-  width: 120px;
+export const Sidebar: FC<Props> = () => {
+  const { toggleSideMenu, isMenuOpen } = useContext(UiContext);
 
-  ::-webkit-scrollbar {
-    width: 10px;
-  }
+  return (
+    <>
+      <AnimatePresence>
+        {isMenuOpen && (
+          <Backdrop>
+            <SidebarStyled isMenuOpen={isMenuOpen}>
+              <motion.div
+                className={`sidebar`}
+                variants={dropIn}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+              >
+                <div className="sidebar--header">
+                  <span className="close" onClick={toggleSideMenu}>
+                    <MdOutlineClose />
+                  </span>
 
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
+                  <hr />
 
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #888;
-  }
+                  <div className="avatar"></div>
 
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
-  .sidebar {
-    min-height: 550px;
-    height: 100%;
-    max-width: 120px;
-    background-color: white;
-    padding: 15px 2px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
+                  <hr />
+                </div>
 
-    .sidebar--header {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      & > hr {
-        width: 100%;
-        opacity: 0.1;
-      }
-      .avatar {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        background-color: gray;
-        margin: 20px 0;
-      }
+                <ul className="sidebar--menu">
+                  <li>
+                    <Button px="5px 10px">
+                      <AiFillHome />
+                    </Button>
+                  </li>
+                  <li>
+                    <Button px="5px 10px">
+                      <AiFillHeart />
+                    </Button>
+                  </li>
+                  <li>
+                    <Button px="5px 10px">
+                      <BiBarChart />
+                    </Button>
+                  </li>
+                </ul>
 
-      .close {
-        & > svg {
-          width: 30px;
-          height: 30px;
-          margin: 20px 0;
-          cursor: pointer;
-        }
-      }
-    }
-
-    .sidebar--menu {
-      padding: 0;
-      margin: 0;
-      flex: 1;
-
-      & > li {
-        margin: 20px 0;
-      }
-    }
-
-    .sidebar--logout {
-      & > svg {
-        width: 30px;
-        height: 30px;
-        cursor: pointer;
-      }
-    }
-  }
-`;
+                <div className="sidebar--logout">
+                  <MdLogout />
+                </div>
+              </motion.div>
+            </SidebarStyled>
+          </Backdrop>
+        )}
+      </AnimatePresence>
+    </>
+  );
+};
