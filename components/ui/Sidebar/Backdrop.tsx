@@ -1,27 +1,40 @@
 import { motion } from "framer-motion";
 import styled from "styled-components";
+import { useMediaQuery } from "../../../helpers/size";
 
 interface BackdropProps {
   children: React.ReactNode;
   onClick?: () => void;
 }
 
-const Backdrop = ({ children, onClick }: BackdropProps) => {
+const Backdrop = ({ children }: BackdropProps) => {
+  const isMedium = useMediaQuery("(min-width: 768px)");
+
   return (
-    <BackdropStyled
-      onClick={() => {}}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    >
-      {children}
-    </BackdropStyled>
+    <>
+      {!isMedium ? (
+        <BackdropStyled
+          onClick={() => {}}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          {children}
+        </BackdropStyled>
+      ) : (
+        <div>{children}</div>
+      )}
+    </>
   );
 };
 
 export default Backdrop;
 
 const BackdropStyled = styled(motion.div)`
+  @media (min-width: 768px) {
+    background: rgb(0, 0, 0, 0);
+  }
+
   position: absolute;
   top: 0;
   left: 0;

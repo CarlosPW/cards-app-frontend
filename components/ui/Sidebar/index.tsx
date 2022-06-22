@@ -1,4 +1,4 @@
-import { FC, useContext } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { UiContext } from "../../../contexts/ui";
@@ -10,32 +10,44 @@ import { MdLogout, MdOutlineClose } from "react-icons/md";
 import Backdrop from "./Backdrop";
 
 import { SidebarStyled } from "../../../styles/ui/";
+import { useMediaQuery } from "../../../helpers/size";
 
 interface Props {}
-
-const dropIn = {
-  hidden: {
-    opacity: 0,
-    x: -120,
-  },
-  visible: {
-    x: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-    },
-  },
-};
 
 export const Sidebar: FC<Props> = () => {
   const { toggleSideMenu, isMenuOpen } = useContext(UiContext);
 
+  const isMedium = useMediaQuery("(min-width: 768px)");
+  const dropIn = isMedium
+    ? {
+        hidden: {
+          x: 0,
+        },
+        visible: {
+          x: 0,
+          transition: {
+            duration: 0.5,
+          },
+        },
+      }
+    : {
+        hidden: {
+          x: -120,
+        },
+        visible: {
+          x: 0,
+          transition: {
+            duration: 0.5,
+          },
+        },
+      };
+
   return (
     <>
       <AnimatePresence>
-        {isMenuOpen && (
+        {(isMenuOpen || isMedium) && (
           <Backdrop>
-            <SidebarStyled isMenuOpen={isMenuOpen}>
+            <SidebarStyled isMenuOpen={isMenuOpen || isMedium}>
               <motion.div
                 className={`sidebar`}
                 variants={dropIn}
@@ -44,9 +56,11 @@ export const Sidebar: FC<Props> = () => {
                 exit="hidden"
               >
                 <div className="sidebar--header">
-                  <span className="close" onClick={toggleSideMenu}>
-                    <MdOutlineClose />
-                  </span>
+                  {!isMedium && (
+                    <span className="close" onClick={toggleSideMenu}>
+                      <MdOutlineClose />
+                    </span>
+                  )}
 
                   <hr />
 

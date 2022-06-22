@@ -1,14 +1,6 @@
 import styled from "styled-components";
 
 export const SidebarStyled = styled.div<{ isMenuOpen: boolean }>`
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  overflow-y: auto;
-  width: 100%;
-  z-index: 10000;
-
   ::-webkit-scrollbar {
     width: 10px;
   }
