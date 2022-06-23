@@ -56,10 +56,12 @@ export const Sidebar: FC<Props> = () => {
                 exit="hidden"
               >
                 <div className="sidebar--header">
-                  {!isMedium && (
+                  {!isMedium ? (
                     <span className="close" onClick={toggleSideMenu}>
                       <MdOutlineClose />
                     </span>
+                  ) : (
+                    <div className="logo">asd</div>
                   )}
 
                   <hr />

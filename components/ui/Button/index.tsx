@@ -10,9 +10,11 @@ interface Props {
   darkColor?: string;
   textColor?: string;
   px?: string;
+  onClick?: () => void;
 }
 
 export const Button: FC<Props> = ({
+  onClick,
   color = T.purple,
   darkColor = T.darkPurple,
   textColor = "white",
@@ -21,11 +23,13 @@ export const Button: FC<Props> = ({
 }) => {
   return (
     <ButtonStyled
+      className="noselect"
       darkColor={darkColor}
       whileHover={{
         scale: 1.03,
       }}
       whileTap={{ scale: 1 }}
+      onClick={onClick}
     >
       <UpLayer color={color} textColor={textColor} px={px}>
         {children}

@@ -3,10 +3,12 @@ import { UiContext, uiReducer } from "./";
 
 export interface UiState {
   isMenuOpen: boolean;
+  isNewCardModalOpen: boolean;
 }
 
 const UI_INITIAL_STATE: UiState = {
   isMenuOpen: false,
+  isNewCardModalOpen: false,
 };
 
 interface Props {
@@ -20,6 +22,10 @@ export const UiProvider: FC<Props> = ({ children }) => {
     dispatch({ type: "[UI] - ToggleMenu" });
   };
 
+  const toggleNewCardModal = () => {
+    dispatch({ type: "[UI] - toggleNewCardModal" });
+  };
+
   return (
     <UiContext.Provider
       value={{
@@ -27,6 +33,7 @@ export const UiProvider: FC<Props> = ({ children }) => {
 
         // Methods
         toggleSideMenu,
+        toggleNewCardModal,
       }}
     >
       {children}

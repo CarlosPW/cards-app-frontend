@@ -1,6 +1,8 @@
 import { UiState } from "./";
 
-type UiActionType = { type: "[UI] - ToggleMenu" };
+type UiActionType =
+  | { type: "[UI] - ToggleMenu" }
+  | { type: "[UI] - toggleNewCardModal" };
 
 export const uiReducer = (state: UiState, action: UiActionType): UiState => {
   switch (action.type) {
@@ -8,6 +10,12 @@ export const uiReducer = (state: UiState, action: UiActionType): UiState => {
       return {
         ...state,
         isMenuOpen: !state.isMenuOpen,
+      };
+
+    case "[UI] - toggleNewCardModal":
+      return {
+        ...state,
+        isNewCardModalOpen: !state.isNewCardModalOpen,
       };
 
     default:
