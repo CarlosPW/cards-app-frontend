@@ -1,9 +1,13 @@
-import React from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
 import { InputText } from "../../../../styles/ui/inputStyled";
 import { Button } from "../../Button";
 
-export const NewCard = () => {
+interface Props {
+  onCancel: () => void;
+}
+
+export const NewCard: FC<Props> = ({ onCancel }) => {
   return (
     <NewCardStyled>
       <h6 className="newcard--title">Crear Baraja</h6>
@@ -20,6 +24,7 @@ export const NewCard = () => {
           darkColor="black"
           textColor="black"
           px="15px 35px"
+          onClick={onCancel}
         >
           Cancelar
         </Button>

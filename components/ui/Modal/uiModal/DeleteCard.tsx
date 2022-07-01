@@ -3,8 +3,13 @@ import styled from "styled-components";
 import { GoAlert } from "react-icons/go";
 import { Button } from "../../Button";
 import { T } from "../../../../styles/Theme";
+import { FC } from "react";
 
-export const DeleteCard = () => {
+interface Props {
+  onCancel: () => void;
+}
+
+export const DeleteCard: FC<Props> = ({ onCancel }) => {
   return (
     <DeleteCardStyled>
       <div className="deletecard--icon">
@@ -19,6 +24,7 @@ export const DeleteCard = () => {
           darkColor="black"
           textColor="black"
           px="15px 25px"
+          onClick={onCancel}
         >
           Cancelar
         </Button>

@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import styled from "styled-components";
 
-const ButtonStyled = styled(motion.button)<{ darkColor?: string }>`
-  background-color: ${({ darkColor }) => darkColor};
+const ButtonStyled = styled(motion.button)<{ darkcolor?: string }>`
+  background-color: ${({ darkcolor }) => darkcolor};
   border-radius: 12px;
   border: none;
   cursor: pointer;

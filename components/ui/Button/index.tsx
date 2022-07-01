@@ -14,17 +14,17 @@ interface Props {
 }
 
 export const Button: FC<Props> = ({
-  onClick,
+  children = "Button",
   color = T.purple,
   darkColor = T.darkPurple,
-  textColor = "white",
-  children = "Button",
+  onClick,
   px = "15px 60px",
+  textColor = "white",
 }) => {
   return (
     <ButtonStyled
       className="noselect"
-      darkColor={darkColor}
+      darkcolor={darkColor}
       whileHover={{
         scale: 1.03,
       }}

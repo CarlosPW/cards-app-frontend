@@ -24,7 +24,6 @@ const dropIn = {
 
 const CardPage = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
   const toggleDeleteModal = () => {
     setIsDeleteModalOpen((prev) => !prev);
   };
@@ -80,7 +79,7 @@ const CardPage = () => {
       </MainLayout>
       {isDeleteModalOpen && (
         <Modal modalOpen={isDeleteModalOpen} handleClose={toggleDeleteModal}>
-          <DeleteCard />
+          <DeleteCard onCancel={toggleDeleteModal} />
         </Modal>
       )}
     </>

@@ -1,7 +1,8 @@
 import type { NextPage } from "next";
 import { useContext } from "react";
-import { UiContext } from "../contexts/ui";
+
 import styled from "styled-components";
+import { UiContext } from "../contexts/ui";
 import { MainLayout } from "../components/layouts";
 import { Button, Card, Modal } from "../components/ui";
 import { NewCard } from "../components/ui/Modal/uiModal";
@@ -21,7 +22,7 @@ const Home: NextPage = () => {
       </MainLayout>
       {isNewCardModalOpen && (
         <Modal modalOpen={isNewCardModalOpen} handleClose={toggleNewCardModal}>
-          <NewCard />
+          <NewCard onCancel={toggleNewCardModal} />
         </Modal>
       )}
     </>
