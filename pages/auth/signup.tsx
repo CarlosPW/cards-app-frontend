@@ -1,6 +1,8 @@
 import { NextPage } from "next";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../../components/ui";
+import { AuthContext } from "../../contexts";
 import { Form, SignupStyled } from "../../styles/pages";
 import { InputText } from "../../styles/ui";
 
@@ -11,7 +13,12 @@ const SignupPage: NextPage = () => {
     watch,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data: any) => console.log(data);
+
+  const { registerUser } = useContext(AuthContext);
+  const onSubmit = (data: any) => {
+    const { email, password } = data;
+    registerUser(email, password);
+  };
 
   console.log(watch("example")); // watch input value by passing the name of it
   return (
