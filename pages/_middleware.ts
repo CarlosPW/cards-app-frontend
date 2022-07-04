@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-import Cookies from "js-cookie";
 import { jwt } from "../utils";
 
 // This function can be marked `async` if using `await` inside
