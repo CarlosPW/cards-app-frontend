@@ -1,4 +1,6 @@
-import { useContext } from "react";
+import EventEmitter from "events";
+import { useRouter } from "next/router";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../../components/ui";
 import { AuthContext } from "../../contexts";
@@ -14,9 +16,18 @@ const signin = () => {
   } = useForm();
 
   const { loginUser } = useContext(AuthContext);
-  const onSubmit = (data: any) => {
+  const router = useRouter();
+
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const onSubmit = async (data: any) => {
+    setLoading(true);
+
     const { email, password } = data;
-    loginUser(email, password);
+    await loginUser(email, password);
+
+    setLoading(false);
+    router.push("/");
   };
 
   return (
@@ -44,8 +55,11 @@ const signin = () => {
           >
             Crear Cuenta
           </Button>
-          <Button px="15px 20px">Ingresar</Button>
+          <Button px="15px 20px" type="submit">
+            Ingresar
+          </Button>
         </div>
+        {loading && <p>Loading</p>}
       </Form>
     </SignupStyled>
   );

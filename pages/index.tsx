@@ -1,28 +1,49 @@
 import type { NextPage } from "next";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import styled from "styled-components";
 import { UiContext } from "../contexts/ui";
 import { MainLayout } from "../components/layouts";
 import { Button, Card, Modal } from "../components/ui";
 import { NewCard } from "../components/ui/Modal/uiModal";
+import cardsApi from "../api/cardsApi";
+import { Cards } from "../interfaces";
+import { configHeaders } from "../helpers/headersConfig";
 
 const Home: NextPage = () => {
   const { toggleNewCardModal, isNewCardModalOpen } = useContext(UiContext);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [cardsData, setCardsData] = useState<Cards[]>([]);
+
+  const getData = async () => {
+    setLoading(true);
+    const { data } = await cardsApi.get<Cards[]>("/cards", configHeaders);
+    setLoading(false);
+    setCardsData(data);
+  };
+
+  useEffect(() => {
+    try {
+      getData();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   return (
     <>
       <MainLayout>
         <Button onClick={toggleNewCardModal}>Crear</Button>
         <CardContainer>
-          <Card />
-          <Card />
-          <Card />
+          {cardsData &&
+            cardsData.map((cardData) => (
+              <Card key={cardData.id} data={cardData} />
+            ))}
         </CardContainer>
       </MainLayout>
       {isNewCardModalOpen && (
         <Modal modalOpen={isNewCardModalOpen} handleClose={toggleNewCardModal}>
-          <NewCard onCancel={toggleNewCardModal} />
+          <NewCard onCancel={toggleNewCardModal} getData={getData} />
         </Modal>
       )}
     </>

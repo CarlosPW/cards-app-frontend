@@ -10,6 +10,7 @@ interface Props {
   darkColor?: string;
   textColor?: string;
   px?: string;
+  type?: "button" | "submit" | "reset" | undefined;
   onClick?: () => void;
 }
 
@@ -20,9 +21,11 @@ export const Button: FC<Props> = ({
   onClick,
   px = "15px 60px",
   textColor = "white",
+  type = "button",
 }) => {
   return (
     <ButtonStyled
+      type={type}
       className="noselect"
       darkcolor={darkColor}
       whileHover={{

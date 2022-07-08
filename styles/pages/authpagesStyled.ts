@@ -8,6 +8,7 @@ export const SignupStyled = styled.div`
 
 export const Form = styled.form`
   width: clamp(50%, 438px, 90%);
+  max-width: 400px;
 
   & > input {
     margin: 5px 0;

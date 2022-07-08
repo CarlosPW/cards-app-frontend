@@ -5,8 +5,20 @@ import { BsLightningChargeFill } from "react-icons/bs";
 // import { BiStats } from "react-icons/bi";
 import { GrMoreVertical } from "react-icons/gr";
 import { motion } from "framer-motion";
+import { Cards } from "../../../interfaces";
+import { FC } from "react";
+import { useRouter } from "next/router";
 
-export const Card = () => {
+interface Props {
+  data: Cards;
+}
+
+export const Card: FC<Props> = ({ data }) => {
+  const router = useRouter();
+  const handleClick = () => {
+    router.push(`/cards/${data.id}`);
+  };
+
   return (
     <CardStyled>
       <div className="card--sidebarcolor"></div>
@@ -15,12 +27,13 @@ export const Card = () => {
           className="-title noselect"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 1 }}
+          onClick={handleClick}
         >
-          <p>Palabras peliculas Harry Potter</p>
+          <p>{data.title}</p>
         </motion.div>
 
         <div className="-counter">
-          <p>12/20</p>
+          <p>{data.items.length}/20</p>
         </div>
 
         <div className="-footer">

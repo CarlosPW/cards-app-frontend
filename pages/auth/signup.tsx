@@ -1,4 +1,5 @@
 import { NextPage } from "next";
+import { useRouter } from "next/router";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../../components/ui";
@@ -15,9 +16,13 @@ const SignupPage: NextPage = () => {
   } = useForm();
 
   const { registerUser } = useContext(AuthContext);
+
+  const router = useRouter();
+
   const onSubmit = (data: any) => {
     const { email, password } = data;
     registerUser(email, password);
+    router.push("/");
   };
 
   console.log(watch("example")); // watch input value by passing the name of it

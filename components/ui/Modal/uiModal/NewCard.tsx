@@ -1,13 +1,29 @@
-import React, { FC } from "react";
+import React, { ChangeEvent, FC, useState } from "react";
 import styled from "styled-components";
+import cardsApi from "../../../../api/cardsApi";
 import { InputText } from "../../../../styles/ui/inputStyled";
 import { Button } from "../../Button";
 
 interface Props {
   onCancel: () => void;
+  getData: () => void;
 }
 
-export const NewCard: FC<Props> = ({ onCancel }) => {
+export const NewCard: FC<Props> = ({ onCancel, getData }) => {
+  const [title, setTitle] = useState<string>("");
+
+  const handleSubmit = async () => {
+    if (title.trim() === "") return;
+
+    await cardsApi.post("/cards", { title });
+    getData();
+    onCancel();
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
+
   return (
     <NewCardStyled>
       <h6 className="newcard--title">Crear Baraja</h6>
@@ -16,6 +32,7 @@ export const NewCard: FC<Props> = ({ onCancel }) => {
         className="newcard--input"
         type="text"
         placeholder="Ingresar nombre..."
+        onChange={handleChange}
       />
 
       <div className="newcard--button-container">
@@ -28,7 +45,9 @@ export const NewCard: FC<Props> = ({ onCancel }) => {
         >
           Cancelar
         </Button>
-        <Button px="15px 50px">Crear</Button>
+        <Button px="15px 50px" onClick={handleSubmit}>
+          Crear
+        </Button>
       </div>
     </NewCardStyled>
   );

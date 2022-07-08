@@ -1,7 +1,7 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useContext } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { UiContext } from "../../../contexts/ui";
+import { AuthContext, UiContext } from "../../../contexts";
 import { Button } from "../Button";
 
 import { AiFillHome, AiFillHeart } from "react-icons/ai";
@@ -15,6 +15,7 @@ import { useMediaQuery } from "../../../helpers/size";
 interface Props {}
 
 export const Sidebar: FC<Props> = () => {
+  const { logout } = useContext(AuthContext);
   const { toggleSideMenu, isMenuOpen } = useContext(UiContext);
 
   const isMedium = useMediaQuery("(min-width: 768px)");
@@ -89,7 +90,7 @@ export const Sidebar: FC<Props> = () => {
                   </li>
                 </ul>
 
-                <div className="sidebar--logout">
+                <div className="sidebar--logout" onClick={logout}>
                   <MdLogout />
                 </div>
               </motion.div>

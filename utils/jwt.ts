@@ -1,7 +1,4 @@
-import jwt from "jsonwebtoken";
-
 import { SignJWT, jwtVerify, type JWTPayload } from "jose";
-import { Token } from "@typescript-eslint/types/dist/generated/ast-spec";
 
 // export const isValidToken = (token: string): Promise<string> => {
 //   if (!process.env.JWT_SECRET) {
@@ -50,8 +47,10 @@ export async function isValidToken(token: string): Promise<JWTPayload> {
     token,
     new TextEncoder().encode(process.env.JWT_SECRET)
   );
+  console.log(typeof payload);
   // run some checks on the returned payload, perhaps you expect some specific values
 
   // if its all good, return it, or perhaps just return a boolean
+
   return payload;
 }
