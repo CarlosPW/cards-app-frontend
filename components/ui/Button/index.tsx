@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { ClipLoader } from "react-spinners";
 import styled from "styled-components";
 
 import { T } from "../../../styles/Theme";
@@ -12,6 +13,7 @@ interface Props {
   px?: string;
   type?: "button" | "submit" | "reset" | undefined;
   onClick?: () => void;
+  loading?: boolean;
 }
 
 export const Button: FC<Props> = ({
@@ -22,6 +24,7 @@ export const Button: FC<Props> = ({
   px = "15px 60px",
   textColor = "white",
   type = "button",
+  loading = false,
 }) => {
   return (
     <ButtonStyled
@@ -35,7 +38,11 @@ export const Button: FC<Props> = ({
       onClick={onClick}
     >
       <UpLayer color={color} textColor={textColor} px={px}>
-        {children}
+        {loading ? (
+          <ClipLoader color={textColor} loading={loading} size={20} />
+        ) : (
+          <>{children}</>
+        )}
       </UpLayer>
     </ButtonStyled>
   );

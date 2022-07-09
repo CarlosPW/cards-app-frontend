@@ -1,39 +1,24 @@
-import React, { ChangeEvent, ChangeEventHandler, useState } from "react";
-import { AiFillCaretDown } from "react-icons/ai";
-import { BsFillTrashFill } from "react-icons/bs";
+import React, { ChangeEvent, useState } from "react";
+import { useRouter } from "next/router";
 
 import { MainLayout } from "../../components/layouts";
-import { Button, Modal } from "../../components/ui";
+import { Button, DropdownItem, Modal } from "../../components/ui";
 import { T } from "../../styles/Theme";
 import { InputText, TextArea } from "../../styles/ui";
-import { motion } from "framer-motion";
 import { CardPageContainer } from "../../styles/pages/cardpageStyled";
 import { DeleteCard } from "../../components/ui/Modal/uiModal";
-import { useEffect } from "react";
 import cardsApi from "../../api/cardsApi";
 
 import { GetServerSideProps, NextPage } from "next";
 import { CardItem, Cards } from "../../interfaces";
 import { configHeaders } from "../../helpers/headersConfig";
 
-const dropIn = {
-  hidden: {
-    opacity: 0,
-  },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.3,
-    },
-  },
-};
-
 interface Props {
   data: Cards;
 }
 
 const CardPage: NextPage<Props> = ({ data }) => {
-  console.log(data);
+  const router = useRouter();
 
   const [cardData, setCardData] = useState<Cards>(data);
 
@@ -45,17 +30,10 @@ const CardPage: NextPage<Props> = ({ data }) => {
     setIsDeleteModalOpen((prev) => !prev);
   };
 
-  const [isDropdownOpen, setisDropdownOpen] = useState<boolean>(false);
-
-  const toggleDropdown = () => {
-    setisDropdownOpen((prev) => !prev);
-  };
-
   const [word, setWord] = useState({
     title: "",
     description: "",
   });
-  console.log(word);
 
   const handleChangeAddWord = async (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -66,27 +44,42 @@ const CardPage: NextPage<Props> = ({ data }) => {
     });
   };
 
+  const handleRefreshCardData = async () => {
+    setLoading(true);
+    const resCards = await cardsApi.get(`cards/${data.id}`, configHeaders);
+    setCardData(resCards.data);
+    setLoading(false);
+  };
+
   const handleSubmitAddWord = async () => {
     if (word.title.trim() === "" || word.description.trim() === "") return;
-    setLoading(true);
 
-    const res = await cardsApi.post(`carditem/${data.id}`, word, configHeaders);
+    setLoading(true);
+    await cardsApi.post(`carditem/${data.id}`, word, configHeaders);
 
     setWord({
       title: "",
       description: "",
     });
 
-    const resCards = await cardsApi.get(`cards/${data.id}`, configHeaders);
-    setCardData(resCards.data);
+    handleRefreshCardData();
     setLoading(false);
+  };
+
+  const goBack = () => {
+    router.push("/");
   };
 
   return (
     <>
       <MainLayout>
         <CardPageContainer>
-          <Button color="white" darkColor="black" textColor="black">
+          <Button
+            color="white"
+            darkColor="black"
+            textColor="black"
+            onClick={goBack}
+          >
             Volver
           </Button>
           <div className="cardpage--add box">
@@ -103,7 +96,9 @@ const CardPage: NextPage<Props> = ({ data }) => {
               onChange={handleChangeAddWord}
               value={word.description}
             ></TextArea>
-            <Button onClick={handleSubmitAddWord}>Añadir</Button>
+            <Button onClick={handleSubmitAddWord} loading={loading}>
+              Añadir
+            </Button>
           </div>
 
           <div className="cardpage--list box">
@@ -113,30 +108,11 @@ const CardPage: NextPage<Props> = ({ data }) => {
             <>
               {cardData.items.map((item: CardItem) => {
                 return (
-                  <div className="--block" key={item.id}>
-                    <div className="sidebar"></div>
-                    <div
-                      className="block-header noselect"
-                      onClick={toggleDropdown}
-                    >
-                      <h6>{item.title}</h6>
-                      <AiFillCaretDown />
-                    </div>
-                    {isDropdownOpen && (
-                      <motion.div
-                        className="block-hidden"
-                        variants={dropIn}
-                        initial="hidden"
-                        animate="visible"
-                        exit="hidden"
-                      >
-                        <TextArea disabled value={item.description}></TextArea>
-                        <Button color={T.red} darkColor="black" px="10px 15px">
-                          <BsFillTrashFill />
-                        </Button>
-                      </motion.div>
-                    )}
-                  </div>
+                  <DropdownItem
+                    key={item.id}
+                    item={item}
+                    handleRefreshCardData={handleRefreshCardData}
+                  />
                 );
               })}
             </>

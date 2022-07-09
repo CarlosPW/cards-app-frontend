@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FC, useState } from "react";
 import styled from "styled-components";
 import cardsApi from "../../../../api/cardsApi";
+import { configHeaders } from "../../../../helpers/headersConfig";
 import { InputText } from "../../../../styles/ui/inputStyled";
 import { Button } from "../../Button";
 
@@ -15,7 +16,7 @@ export const NewCard: FC<Props> = ({ onCancel, getData }) => {
   const handleSubmit = async () => {
     if (title.trim() === "") return;
 
-    await cardsApi.post("/cards", { title });
+    await cardsApi.post("/cards", { title }, configHeaders);
     getData();
     onCancel();
   };
