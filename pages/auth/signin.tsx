@@ -1,4 +1,5 @@
 import EventEmitter from "events";
+import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -7,7 +8,7 @@ import { AuthContext } from "../../contexts";
 import { Form, SignupStyled } from "../../styles/pages";
 import { InputText } from "../../styles/ui";
 
-const signin = () => {
+const Signin: NextPage = () => {
   const {
     register,
     handleSubmit,
@@ -65,4 +66,4 @@ const signin = () => {
   );
 };
 
-export default signin;
+export default Signin;
