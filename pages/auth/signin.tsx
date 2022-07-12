@@ -53,6 +53,7 @@ const Signin: NextPage = () => {
             color="white"
             darkColor="black"
             textColor="black"
+            onClick={() => router.push("/auth/signup")}
           >
             Crear Cuenta
           </Button>

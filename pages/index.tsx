@@ -2,16 +2,17 @@ import type { NextPage } from "next";
 import { useContext, useEffect, useState } from "react";
 
 import styled from "styled-components";
-import { UiContext } from "../contexts/ui";
+import { UiContext, AuthContext } from "../contexts/";
 import { MainLayout } from "../components/layouts";
 import { Button, Card, Modal } from "../components/ui";
 import { NewCard } from "../components/ui/Modal/uiModal";
 import cardsApi from "../api/cardsApi";
 import { Cards } from "../interfaces";
-import { configHeaders } from "../helpers/headersConfig";
 
 const Home: NextPage = () => {
   const { toggleNewCardModal, isNewCardModalOpen } = useContext(UiContext);
+  const { configHeaders } = useContext(AuthContext);
+
   const [loading, setLoading] = useState<boolean>(false);
   const [cardsData, setCardsData] = useState<Cards[]>([]);
 

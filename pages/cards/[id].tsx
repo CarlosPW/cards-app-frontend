@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useContext, useState } from "react";
 import { useRouter } from "next/router";
 
 import { MainLayout } from "../../components/layouts";
@@ -11,7 +11,7 @@ import cardsApi from "../../api/cardsApi";
 
 import { GetServerSideProps, NextPage } from "next";
 import { CardItem, Cards } from "../../interfaces";
-import { configHeaders } from "../../helpers/headersConfig";
+import { AuthContext } from "../../contexts";
 
 interface Props {
   data: Cards;
@@ -19,6 +19,8 @@ interface Props {
 
 const CardPage: NextPage<Props> = ({ data }) => {
   const router = useRouter();
+
+  const { configHeaders } = useContext(AuthContext);
 
   const [cardData, setCardData] = useState<Cards>(data);
 
@@ -46,7 +48,7 @@ const CardPage: NextPage<Props> = ({ data }) => {
 
   const handleRefreshCardData = async () => {
     setLoading(true);
-    const resCards = await cardsApi.get(`cards/${data.id}`, configHeaders);
+    const resCards = await cardsApi.get(`cards/${data.id}`);
     setCardData(resCards.data);
     setLoading(false);
   };

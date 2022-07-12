@@ -2,7 +2,7 @@ import { IUser } from "../../interfaces";
 import { AuthState } from "./";
 
 type AuthActionType =
-  | { type: "[Auth] - Login"; payload: IUser }
+  | { type: "[Auth] - Login"; payload: any }
   | { type: "[Auth] - Logout" };
 
 export const authReducer = (
@@ -14,7 +14,8 @@ export const authReducer = (
       return {
         ...state,
         isLoggedIn: true,
-        user: action.payload,
+        user: action.payload.user,
+        token: action.payload.access_token,
       };
 
     case "[Auth] - Logout":

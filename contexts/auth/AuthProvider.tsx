@@ -11,11 +11,13 @@ import cardsApi from "../../api/cardsApi";
 export interface AuthState {
   isLoggedIn: boolean;
   user?: IUser;
+  token: string | undefined;
 }
 
 const AUTH_INITIAL_STATE: AuthState = {
   isLoggedIn: false,
   user: undefined,
+  token: undefined,
 };
 
 export const AuthProvider: FC<{ children: React.ReactNode }> = ({
@@ -28,17 +30,18 @@ export const AuthProvider: FC<{ children: React.ReactNode }> = ({
     checkToken();
   }, []);
 
+  const configHeaders = {
+    headers: {
+      Authorization: `Bearer ${state.token}`,
+    },
+  };
+
   const checkToken = async () => {
     if (!Cookies.get("token")) {
       return;
     }
 
     try {
-      // const { data } = await cardsApi.post("/auth/token-validation");
-      // console.log(data);
-      // const { access_token, user } = data;
-      // Cookies.set("token", access_token);
-      // dispatch({ type: "[Auth] - Login", payload: user });
     } catch (error) {
       Cookies.remove("token");
     }
@@ -50,9 +53,11 @@ export const AuthProvider: FC<{ children: React.ReactNode }> = ({
   ): Promise<boolean> => {
     try {
       const { data } = await cardsApi.post("/auth/signin", { email, password });
-      const { access_token, user } = data;
+      const { access_token } = data;
       Cookies.set("token", access_token);
-      dispatch({ type: "[Auth] - Login", payload: user });
+
+      const payload = data;
+      dispatch({ type: "[Auth] - Login", payload });
       return true;
     } catch (error) {
       return false;
@@ -100,6 +105,7 @@ export const AuthProvider: FC<{ children: React.ReactNode }> = ({
     <AuthContext.Provider
       value={{
         ...state,
+        configHeaders,
 
         // Methods
         loginUser,
