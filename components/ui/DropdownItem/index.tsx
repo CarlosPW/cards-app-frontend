@@ -1,9 +1,15 @@
 import { motion } from "framer-motion";
-import React, { Dispatch, FC, SetStateAction, useState } from "react";
+import React, {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 import { AiFillCaretDown } from "react-icons/ai";
 import { BsFillTrashFill } from "react-icons/bs";
 import cardsApi from "../../../api/cardsApi";
-import { configHeaders } from "../../../helpers/headersConfig";
+import { AuthContext } from "../../../contexts";
 import { CardItem } from "../../../interfaces";
 import { T } from "../../../styles/Theme";
 import { TextArea } from "../../../styles/ui";
@@ -27,6 +33,8 @@ interface Props {
 }
 
 export const DropdownItem: FC<Props> = ({ item, handleRefreshCardData }) => {
+  const { configHeaders } = useContext(AuthContext);
+
   const [isDropdownOpen, setisDropdownOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 

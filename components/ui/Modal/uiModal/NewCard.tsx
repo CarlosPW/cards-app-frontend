@@ -1,7 +1,7 @@
-import React, { ChangeEvent, FC, useState } from "react";
+import React, { ChangeEvent, FC, useContext, useState } from "react";
 import styled from "styled-components";
 import cardsApi from "../../../../api/cardsApi";
-import { configHeaders } from "../../../../helpers/headersConfig";
+import { AuthContext } from "../../../../contexts";
 import { InputText } from "../../../../styles/ui/inputStyled";
 import { Button } from "../../Button";
 
@@ -11,6 +11,8 @@ interface Props {
 }
 
 export const NewCard: FC<Props> = ({ onCancel, getData }) => {
+  const { configHeaders } = useContext(AuthContext);
+
   const [title, setTitle] = useState<string>("");
 
   const handleSubmit = async () => {

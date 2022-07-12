@@ -23,19 +23,16 @@ const CardPage: NextPage<Props> = ({ data }) => {
   const { configHeaders } = useContext(AuthContext);
 
   const [cardData, setCardData] = useState<Cards>(data);
-
   const [loading, setLoading] = useState<boolean>(false);
-
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
-
-  const toggleDeleteModal = () => {
-    setIsDeleteModalOpen((prev) => !prev);
-  };
-
   const [word, setWord] = useState({
     title: "",
     description: "",
   });
+
+  const toggleDeleteModal = () => {
+    setIsDeleteModalOpen((prev) => !prev);
+  };
 
   const handleChangeAddWord = async (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -48,7 +45,7 @@ const CardPage: NextPage<Props> = ({ data }) => {
 
   const handleRefreshCardData = async () => {
     setLoading(true);
-    const resCards = await cardsApi.get(`cards/${data.id}`);
+    const resCards = await cardsApi.get(`cards/${data.id}`, configHeaders);
     setCardData(resCards.data);
     setLoading(false);
   };
