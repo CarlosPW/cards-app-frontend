@@ -1,4 +1,4 @@
-import { FC, useReducer, useEffect } from "react";
+import { FC, useReducer, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -17,24 +17,24 @@ export interface AuthState {
 const AUTH_INITIAL_STATE: AuthState = {
   isLoggedIn: false,
   user: undefined,
-  token: undefined,
+  token: Cookies.get("token") || undefined,
 };
 
 export const AuthProvider: FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
+  const [configHeaders] = useState({
+    headers: {
+      Authorization: `Bearer ${state.token}`,
+    },
+  });
+
   const router = useRouter();
 
   useEffect(() => {
     checkToken();
   }, []);
-
-  const configHeaders = {
-    headers: {
-      Authorization: `Bearer ${state.token}`,
-    },
-  };
 
   const checkToken = async () => {
     if (!Cookies.get("token")) {
@@ -42,6 +42,15 @@ export const AuthProvider: FC<{ children: React.ReactNode }> = ({
     }
 
     try {
+      const token = Cookies.get("token");
+      const { data } = await cardsApi.post("/auth/token-validation", { token });
+
+      // const payload = {
+      //   token,
+      //   user: data.email,
+      // };
+
+      // dispatch({ type: "[Auth] - Login", payload });
     } catch (error) {
       Cookies.remove("token");
     }

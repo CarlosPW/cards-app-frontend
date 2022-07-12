@@ -47,7 +47,6 @@ export async function isValidToken(token: string): Promise<JWTPayload> {
     token,
     new TextEncoder().encode(process.env.JWT_SECRET)
   );
-  console.log(typeof payload);
   // run some checks on the returned payload, perhaps you expect some specific values
 
   // if its all good, return it, or perhaps just return a boolean
