@@ -6,25 +6,26 @@ import { jwt } from "./utils";
 const PUBLIC_FILE = /\.(.*)$/;
 
 export async function middleware(request: NextRequest) {
-  if (
-    request.nextUrl.pathname.startsWith("/_next") || // exclude Next.js internals
-    request.nextUrl.pathname.startsWith("/api") || //  exclude all API routes
-    request.nextUrl.pathname.startsWith("/static") || // exclude static files
-    PUBLIC_FILE.test(request.nextUrl.pathname) // exclude all files in the public folder
-  )
-    return NextResponse.next();
-
+  const { pathname } = request.nextUrl;
   const url = request.nextUrl.clone();
   const token = request.cookies.get("token") || undefined;
 
   if (
-    request.nextUrl.pathname === "/auth/signin" ||
-    request.nextUrl.pathname === "/auth/signup"
+    pathname.startsWith("/_next") || // exclude Next.js internals
+    pathname.startsWith("/api") || //  exclude all API routes
+    pathname.startsWith("/static") || // exclude static files
+    PUBLIC_FILE.test(pathname) // exclude all files in the public folder
+  )
+    return NextResponse.next();
+
+  if (
+    pathname.startsWith("/auth/signin") ||
+    pathname.startsWith("/auth/signup")
   ) {
     if (token) {
       try {
         await jwt.isValidToken(token);
-        return NextResponse.redirect(new URL("/", request.url));
+        return NextResponse.rewrite(new URL("/", request.url));
       } catch (error) {
         return NextResponse.next();
       }
@@ -32,13 +33,13 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!token) {
-    return NextResponse.redirect(new URL("/auth/signin", request.url));
+    return NextResponse.rewrite(new URL("/auth/signin", request.url));
   }
 
   try {
     await jwt.isValidToken(token);
     return NextResponse.next();
   } catch (error) {
-    return NextResponse.redirect(new URL("/auth/signin", request.url));
+    return NextResponse.rewrite(new URL("/auth/signin", request.url));
   }
 }
