@@ -16,10 +16,10 @@ export async function middleware(request: NextRequest) {
         await jwt.isValidToken(token);
         return NextResponse.redirect(new URL("/", request.url));
       } catch (error) {
-        return;
+        return NextResponse.next();
       }
     } else {
-      return;
+      return NextResponse.next();
     }
   }
 
