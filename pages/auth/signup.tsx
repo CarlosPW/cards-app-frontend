@@ -25,7 +25,6 @@ const SignupPage: NextPage = () => {
     router.push("/");
   };
 
-  console.log(watch("example")); // watch input value by passing the name of it
   return (
     <SignupStyled>
       <Form onSubmit={handleSubmit(onSubmit)}>
