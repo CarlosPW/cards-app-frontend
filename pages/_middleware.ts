@@ -13,11 +13,8 @@ export async function middleware(request: NextRequest) {
   ) {
     if (token) {
       try {
-        const payload = await jwt.isValidToken(token);
-
-        if (payload) {
-          return NextResponse.redirect(new URL("/", request.url));
-        }
+        await jwt.isValidToken(token);
+        return NextResponse.redirect(new URL("/", request.url));
       } catch (error) {
         return;
       }

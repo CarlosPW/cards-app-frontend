@@ -14,7 +14,7 @@ export const authReducer = (
       return {
         ...state,
         isLoggedIn: true,
-        user: action.payload.user,
+        user: action.payload.email,
         token: action.payload.access_token,
       };
 

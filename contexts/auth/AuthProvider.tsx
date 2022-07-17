@@ -24,7 +24,7 @@ export const AuthProvider: FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
-  const [configHeaders] = useState({
+  const [configHeaders, setConfigHeaders] = useState({
     headers: {
       Authorization: `Bearer ${state.token}`,
     },
@@ -50,6 +50,7 @@ export const AuthProvider: FC<{ children: React.ReactNode }> = ({
       //   user: data.email,
       // };
 
+      // TODO: Asignar email de usuario al hacer reload (F5)
       // dispatch({ type: "[Auth] - Login", payload });
     } catch (error) {
       Cookies.remove("token");
@@ -66,6 +67,13 @@ export const AuthProvider: FC<{ children: React.ReactNode }> = ({
       Cookies.set("token", access_token);
 
       const payload = data;
+
+      setConfigHeaders({
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+
       dispatch({ type: "[Auth] - Login", payload });
       return true;
     } catch (error) {
