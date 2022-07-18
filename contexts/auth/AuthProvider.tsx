@@ -37,7 +37,7 @@ export const AuthProvider: FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const checkToken = async () => {
-    if (!Cookies.get("token")) {
+    if (!state.token) {
       return;
     }
 

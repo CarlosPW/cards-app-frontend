@@ -29,7 +29,7 @@ const Home: NextPage = () => {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [getData]);
 
   return (
     <>
