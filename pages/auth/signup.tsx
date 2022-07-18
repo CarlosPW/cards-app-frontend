@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Logo1 } from "../../assets/logo/logo1";
+import { Logo1 } from "../../assets/logo/Logo1";
 import { Button } from "../../components/ui";
 import { AuthContext } from "../../contexts";
 import { Form, SignupStyled } from "../../styles/pages";
