@@ -30,20 +30,26 @@ export async function middleware(request: NextRequest) {
 
     try {
       await jwt.isValidToken(token);
-      return NextResponse.redirect(new URL("/", request.url));
+      return NextResponse.redirect(
+        new URL("/", "https://cards-app-frontend.vercel.app/")
+      );
     } catch (error) {
       return NextResponse.next();
     }
   }
 
   if (!token) {
-    return NextResponse.redirect(new URL("/auth/signin", request.url));
+    return NextResponse.redirect(
+      new URL("/auth/signin", "https://cards-app-frontend.vercel.app/")
+    );
   }
 
   try {
     await jwt.isValidToken(token);
     return NextResponse.next();
   } catch (error) {
-    return NextResponse.redirect(new URL("/auth/signin", request.url));
+    return NextResponse.redirect(
+      new URL("/auth/signin", "https://cards-app-frontend.vercel.app/")
+    );
   }
 }
