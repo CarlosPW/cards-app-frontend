@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
   )
     return NextResponse.next();
 
-  const token = request.cookies.get("token") || undefined;
+  const token = request.cookies.get("token");
   console.log({ token });
 
   if (
@@ -46,14 +46,26 @@ export async function middleware(request: NextRequest) {
     // return NextResponse.redirect(new URL("/auth/signin", request.url));
   }
 
-  try {
-    await jwt.isValidToken(token);
-    return NextResponse.next();
-  } catch (error) {
+  const payload = await jwt.isValidToken(token);
+  console.log({ payload });
+
+  if (!payload) {
     console.log("last try/catch");
     request.nextUrl.pathname = "/auth/signin";
     console.log(request.nextUrl);
     return NextResponse.redirect(request.nextUrl);
-    // return NextResponse.redirect(new URL("/auth/signin", request.url));
   }
+
+  return NextResponse.next();
+
+  // try {
+  //   await jwt.isValidToken(token);
+  // return NextResponse.next();
+  // } catch (error) {
+  //   console.log("last try/catch");
+  //   request.nextUrl.pathname = "/auth/signin";
+  //   console.log(request.nextUrl);
+  //   return NextResponse.redirect(request.nextUrl);
+  //   // return NextResponse.redirect(new URL("/auth/signin", request.url));
+  // }
 }
