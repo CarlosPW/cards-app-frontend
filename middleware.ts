@@ -27,7 +27,7 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/auth/signin") ||
     pathname.startsWith("/auth/signup")
   ) {
-    if (!token) return NextResponse.next();
+    if (!token) return;
 
     try {
       const payload = await jwt.isValidToken(token);
@@ -36,7 +36,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(domain);
       // return NextResponse.redirect(new URL("/", request.url));
     } catch (error) {
-      return NextResponse.next();
+      return;
     }
   }
 
