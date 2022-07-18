@@ -17,6 +17,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
 
   const token = request.cookies.get("token") || undefined;
+  console.log({ token });
 
   if (
     pathname.startsWith("/auth/signin") ||
@@ -35,7 +36,7 @@ export async function middleware(request: NextRequest) {
     // }
   }
 
-  if (!token) {
+  if (token === undefined) {
     request.nextUrl.pathname = "/auth/signin";
     console.log(request.nextUrl);
     return NextResponse.redirect(request.nextUrl);
