@@ -40,7 +40,6 @@ export async function middleware(request: NextRequest) {
     console.log("if (token === undefined)");
 
     request.nextUrl.pathname = "/auth/signin";
-    console.log(request.nextUrl);
     return NextResponse.redirect(request.nextUrl);
 
     // return NextResponse.redirect(new URL("/auth/signin", request.url));

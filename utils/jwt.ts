@@ -43,13 +43,9 @@ export async function sign(payload: string, secret: string): Promise<string> {
 }
 
 export async function isValidToken(token: string): Promise<JWTPayload> {
-  try {
-    const { payload } = await jwtVerify(
-      token,
-      new TextEncoder().encode(process.env.JWT_SECRET)
-    );
-    return payload;
-  } catch (error) {
-    throw new Error("Failed Token");
-  }
+  const { payload } = await jwtVerify(
+    token,
+    new TextEncoder().encode(process.env.JWT_SECRET)
+  );
+  return payload;
 }
