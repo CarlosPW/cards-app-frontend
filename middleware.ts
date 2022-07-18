@@ -45,26 +45,31 @@ export async function middleware(request: NextRequest) {
     // return NextResponse.redirect(new URL("/auth/signin", request.url));
   }
 
-  // const payload = await jwt.isValidToken(token);
+  await jwt
+    .isValidToken(token)
+    .finally(() => NextResponse.next())
+    .catch(() => {
+      request.nextUrl.pathname = "/auth/signin";
+      console.log(request.nextUrl);
+      return NextResponse.redirect(request.nextUrl);
+    });
   // console.log({ payload });
 
   // if (!payload) {
   //   console.log("last try/catch");
+  // request.nextUrl.pathname = "/auth/signin";
+  // console.log(request.nextUrl);
+  // return NextResponse.redirect(request.nextUrl);
+  // }
+
+  // try {
+  //   await jwt.isValidToken(token)
+  //   return NextResponse.next();
+  // } catch (error) {
+  //   console.log("last try/catch");
   //   request.nextUrl.pathname = "/auth/signin";
   //   console.log(request.nextUrl);
   //   return NextResponse.redirect(request.nextUrl);
+  //   // return NextResponse.redirect(new URL("/auth/signin", request.url));
   // }
-
-  // return NextResponse.next();
-
-  try {
-    await jwt.isValidToken(token);
-    return NextResponse.next();
-  } catch (error) {
-    console.log("last try/catch");
-    request.nextUrl.pathname = "/auth/signin";
-    console.log(request.nextUrl);
-    return NextResponse.redirect(request.nextUrl);
-    // return NextResponse.redirect(new URL("/auth/signin", request.url));
-  }
 }
