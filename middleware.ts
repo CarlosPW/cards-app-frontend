@@ -6,7 +6,6 @@ import { jwt } from "./utils";
 const PUBLIC_FILE = /\.(.*)$/;
 
 export async function middleware(request: NextRequest) {
-  const domain = request.nextUrl.clone();
   const { pathname } = request.nextUrl;
 
   if (
@@ -32,17 +31,14 @@ export async function middleware(request: NextRequest) {
     try {
       const payload = await jwt.isValidToken(token);
       console.log({ payload });
-      domain.pathname = "/";
-      return NextResponse.redirect(domain);
-      // return NextResponse.redirect(new URL("/", request.url));
+      return NextResponse.redirect(new URL("/", request.url));
     } catch (error) {
       return;
     }
   }
 
   if (!token) {
-    domain.pathname = "/auth/signin";
-    return NextResponse.redirect(domain);
+    return NextResponse.redirect(new URL("/auth/signin", request.url));
   }
 
   try {
@@ -50,8 +46,6 @@ export async function middleware(request: NextRequest) {
     console.log({ payload });
     return NextResponse.next();
   } catch (error) {
-    domain.pathname = "/";
-    return NextResponse.redirect(domain);
-    // return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/auth/signin", request.url));
   }
 }
