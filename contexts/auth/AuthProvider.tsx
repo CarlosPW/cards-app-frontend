@@ -33,7 +33,7 @@ export const AuthProvider: FC<{ children: React.ReactNode }> = ({
   const router = useRouter();
 
   useEffect(() => {
-    checkToken();
+    // checkToken();
   }, []);
 
   const checkToken = async () => {
