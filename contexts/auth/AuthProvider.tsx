@@ -43,6 +43,8 @@ export const AuthProvider: FC<{ children: React.ReactNode }> = ({
 
     try {
       const token = Cookies.get("token");
+      if (!token) return;
+
       const { data } = await cardsApi.post("/auth/token-validation", { token });
 
       // const payload = {
