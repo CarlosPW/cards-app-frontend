@@ -36,14 +36,20 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!token) {
-    return NextResponse.redirect(new URL("/auth/signin", request.url));
+    request.nextUrl.pathname = "/auth/signin";
+    console.log(request.nextUrl);
+    return NextResponse.redirect(request.nextUrl);
+
+    // return NextResponse.redirect(new URL("/auth/signin", request.url));
   }
 
   try {
-    const payload = await jwt.isValidToken(token);
-    console.log({ payload });
+    await jwt.isValidToken(token);
     return NextResponse.next();
   } catch (error) {
-    return NextResponse.redirect(new URL("/auth/signin", request.url));
+    request.nextUrl.pathname = "/auth/signin";
+    console.log(request.nextUrl);
+    return NextResponse.redirect(request.nextUrl);
+    // return NextResponse.redirect(new URL("/auth/signin", request.url));
   }
 }
