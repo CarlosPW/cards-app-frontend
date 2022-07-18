@@ -29,27 +29,23 @@ export async function middleware(request: NextRequest) {
     if (!token) return NextResponse.next();
 
     try {
-      await jwt.isValidToken(token);
-      return NextResponse.redirect(
-        new URL("/", "https://cards-app-frontend.vercel.app/")
-      );
+      const payload = await jwt.isValidToken(token);
+      console.log({ payload });
+      return NextResponse.redirect(new URL("/", request.url));
     } catch (error) {
       return NextResponse.next();
     }
   }
 
   if (!token) {
-    return NextResponse.redirect(
-      new URL("/auth/signin", "https://cards-app-frontend.vercel.app/")
-    );
+    return NextResponse.redirect(new URL("/auth/signin", request.url));
   }
 
   try {
-    await jwt.isValidToken(token);
+    const payload = await jwt.isValidToken(token);
+    console.log({ payload });
     return NextResponse.next();
   } catch (error) {
-    return NextResponse.redirect(
-      new URL("/auth/signin", "https://cards-app-frontend.vercel.app/")
-    );
+    return NextResponse.redirect(new URL("/auth/signin", request.url));
   }
 }
