@@ -1,11 +1,13 @@
-import EventEmitter from "events";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
+import { ClipLoader } from "react-spinners";
+import { Logo1 } from "../../assets/logo/logo1";
 import { Button } from "../../components/ui";
 import { AuthContext } from "../../contexts";
 import { Form, SignupStyled } from "../../styles/pages";
+import { T } from "../../styles/Theme";
 import { InputText } from "../../styles/ui";
 
 const Signin: NextPage = () => {
@@ -34,6 +36,7 @@ const Signin: NextPage = () => {
   return (
     <SignupStyled>
       <Form onSubmit={handleSubmit(onSubmit)}>
+        <Logo1 />
         <InputText
           type="email"
           placeholder="E-mail"
@@ -57,11 +60,10 @@ const Signin: NextPage = () => {
           >
             Crear Cuenta
           </Button>
-          <Button px="15px 20px" type="submit">
+          <Button px="15px 20px" type="submit" loading={loading}>
             Ingresar
           </Button>
         </div>
-        {loading && <p>Loading</p>}
       </Form>
     </SignupStyled>
   );

@@ -92,9 +92,11 @@ export const AuthProvider: FC<{ children: React.ReactNode }> = ({
         email,
         password,
       });
-      const { access_token, user } = data;
-      Cookies.set("token", access_token);
-      dispatch({ type: "[Auth] - Login", payload: user });
+
+      const payload = data;
+
+      Cookies.set("token", data.access_token);
+      dispatch({ type: "[Auth] - Login", payload });
       return {
         hasError: false,
       };

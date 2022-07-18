@@ -17,32 +17,28 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
 
   const token = request.cookies.get("token");
-  console.log({ token });
 
   if (
     pathname.startsWith("/auth/signin") ||
     pathname.startsWith("/auth/signup")
   ) {
-    return NextResponse.next();
+    if (!token) return NextResponse.next();
 
-    // if (!token) return;
-
-    // try {
-    //   const payload = await jwt.isValidToken(token);
-    //   console.log({ payload });
-    //   return NextResponse.redirect(new URL("/", request.url));
-    // } catch (error) {
-    //   return;
-    // }
+    await jwt
+      .isValidToken(token)
+      .finally(() => {
+        request.nextUrl.pathname = "/";
+        return NextResponse.redirect(request.nextUrl);
+      })
+      .catch(() => {
+        request.nextUrl.pathname = "/auth/signin";
+        return NextResponse.redirect(request.nextUrl);
+      });
   }
 
   if (!token) {
-    console.log("if (token === undefined)");
-
     request.nextUrl.pathname = "/auth/signin";
     return NextResponse.redirect(request.nextUrl);
-
-    // return NextResponse.redirect(new URL("/auth/signin", request.url));
   }
 
   await jwt
@@ -50,26 +46,6 @@ export async function middleware(request: NextRequest) {
     .finally(() => NextResponse.next())
     .catch(() => {
       request.nextUrl.pathname = "/auth/signin";
-      console.log(request.nextUrl);
       return NextResponse.redirect(request.nextUrl);
     });
-  // console.log({ payload });
-
-  // if (!payload) {
-  //   console.log("last try/catch");
-  // request.nextUrl.pathname = "/auth/signin";
-  // console.log(request.nextUrl);
-  // return NextResponse.redirect(request.nextUrl);
-  // }
-
-  // try {
-  //   await jwt.isValidToken(token)
-  //   return NextResponse.next();
-  // } catch (error) {
-  //   console.log("last try/catch");
-  //   request.nextUrl.pathname = "/auth/signin";
-  //   console.log(request.nextUrl);
-  //   return NextResponse.redirect(request.nextUrl);
-  //   // return NextResponse.redirect(new URL("/auth/signin", request.url));
-  // }
 }

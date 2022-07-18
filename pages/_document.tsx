@@ -5,6 +5,7 @@ import Document, {
   Main,
   NextScript,
 } from "next/document";
+import Logo2 from "../assets/logo/logo_2.svg";
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -17,6 +18,7 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <link rel="icon" href="../assets/logo/logo_2.svg" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link

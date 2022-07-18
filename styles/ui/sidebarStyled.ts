@@ -44,7 +44,11 @@ export const SidebarStyled = styled.div<{ isMenuOpen: boolean }>`
         opacity: 0.1;
       }
       .logo {
-        margin: 15px;
+        margin: 15px 25px;
+
+        & > svg {
+          width: 100%;
+        }
       }
       .avatar {
         background-color: gray;

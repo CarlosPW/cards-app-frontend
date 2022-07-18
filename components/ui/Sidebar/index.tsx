@@ -11,6 +11,7 @@ import Backdrop from "./Backdrop";
 
 import { SidebarStyled } from "../../../styles/ui/";
 import { useMediaQuery } from "../../../helpers/size";
+import { Logo2 } from "../../../assets/logo/Logo2";
 
 interface Props {}
 
@@ -62,7 +63,9 @@ export const Sidebar: FC<Props> = () => {
                       <MdOutlineClose />
                     </span>
                   ) : (
-                    <div className="logo">asd</div>
+                    <div className="logo">
+                      <Logo2 />
+                    </div>
                   )}
 
                   <hr />
