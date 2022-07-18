@@ -7,10 +7,6 @@ const PUBLIC_FILE = /\.(.*)$/;
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const token = request.cookies.get("token") || undefined;
-
-  console.log({ token });
-  console.log({ pathname });
 
   if (
     pathname.startsWith("/_next") || // exclude Next.js internals
@@ -20,18 +16,24 @@ export async function middleware(request: NextRequest) {
   )
     return NextResponse.next();
 
+  const token = request.cookies.get("token") || undefined;
+
+  console.log(request.url);
+  console.log(token);
+  console.log({ pathname });
+
   if (
     pathname.startsWith("/auth/signin") ||
     pathname.startsWith("/auth/signup")
   ) {
-    if (token) {
-      try {
-        await jwt.isValidToken(token);
-        return NextResponse.redirect(new URL("/", request.url));
-      } catch (error) {
-        return NextResponse.next();
-      }
-    } else return NextResponse.next();
+    if (!token) return NextResponse.next();
+
+    try {
+      await jwt.isValidToken(token);
+      return NextResponse.redirect(new URL("/", request.url));
+    } catch (error) {
+      return NextResponse.next();
+    }
   }
 
   if (!token) {
