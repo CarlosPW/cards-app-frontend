@@ -36,7 +36,9 @@ export async function middleware(request: NextRequest) {
     // }
   }
 
-  if (token === undefined) {
+  if (!token) {
+    console.log("if (token === undefined)");
+
     request.nextUrl.pathname = "/auth/signin";
     console.log(request.nextUrl);
     return NextResponse.redirect(request.nextUrl);
@@ -48,6 +50,7 @@ export async function middleware(request: NextRequest) {
     await jwt.isValidToken(token);
     return NextResponse.next();
   } catch (error) {
+    console.log("last try/catch");
     request.nextUrl.pathname = "/auth/signin";
     console.log(request.nextUrl);
     return NextResponse.redirect(request.nextUrl);
